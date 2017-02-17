@@ -1,0 +1,73 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: gelid
+file_extensions: [gld, gelid]
+scope: source.gelid
+contexts:
+  main:
+    # String
+    - match: '"'
+      scope: punctuation.definition.string.begin.gelid
+      push: double_quoted_string
+
+    # Block Comment
+    - match: '#--'
+      scope: punctuation.definition.comment.gelid
+      push: block_comment
+
+    # Line Comment
+    - match: '#'
+      scope: punctuation.definition.comment.gelid
+      push: line_comment
+
+    # Default
+    - match: '(^|,)\s*'
+      push: line_begin
+
+
+    # Symbol
+    - match: ':[^@$\(\)\[\]\{\},# \t]*\b'
+      scope: constant.numeric.gelid
+
+    # Keywords
+    - match: '\@|\$'
+      scope: keyword.control.gelid
+
+    # Set Operator
+    - match: '(^|,\s*|\s+)=\s*'
+      scope: keyword.operator.gelid
+      push: line_begin
+
+    # Numbers
+    - match: '\b(-)?(0.)?[0-9.]+\b'
+      scope: constant.numeric.gelid
+
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.gelid
+    - match: '\\.'
+      scope: constant.character.escape.gelid
+    - match: '"'
+      scope: punctuation.definition.string.end.gelid
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.gelid
+    - match: $
+      pop: true
+
+  block_comment:
+    - meta_scope: comment.block.gelid
+    - match: '--#'
+      pop: true
+
+  line_begin:
+    - match: '(require|if|while|return|catch|throw)\b'
+      scope: keyword.control.gelid
+      pop: true
+    - match: '(Object|Function|Number|String|T|nil|Symbol)\b'
+      scope: storage.type.gelid
+      pop: true
+    - match: ''
+      pop: true
