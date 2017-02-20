@@ -6,6 +6,10 @@ file_extensions: [gld, gelid]
 scope: source.gelid
 contexts:
   main:
+    # Annotation
+    - match: '`'
+      push: annotation
+
     # String
     - match: '"'
       scope: punctuation.definition.string.begin.gelid
@@ -43,6 +47,11 @@ contexts:
     - match: '\b(-)?(0.)?[0-9.]+\b'
       scope: constant.numeric.gelid
 
+
+  annotation:
+    - meta_scope: storage.type.annotation.gelid
+    - match: '`'
+      pop: true
 
   double_quoted_string:
     - meta_scope: string.quoted.double.gelid
